@@ -14,11 +14,14 @@ namespace RenamerX
         public static List<FileInfo> Files { get; private set; }
         public static List<FolderInfo> Folders { get; private set; }
 
-        public static void Load(string[] items)
+        static Worker()
         {
             Files = new List<FileInfo>();
             Folders = new List<FolderInfo>();
+        }
 
+        public static void Load(string[] items)
+        {
             foreach (string item in items)
             {
                 if (File.Exists(item))
