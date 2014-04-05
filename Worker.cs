@@ -47,7 +47,7 @@ namespace RenamerX
                             File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.OutputText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
                             break;
                         case OperationType.Replace:
-                            string fileNameNew = Regex.Replace(fi.FullName, config.InputText, config.OutputText);
+                            string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.InputText, config.OutputText);
                             File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
                             break;
                     }
@@ -73,6 +73,14 @@ namespace RenamerX
                     }
                 }
             }
+
+            Clear();
+        }
+
+        public static void Clear()
+        {
+            Files.Clear();
+            Folders.Clear();
         }
     }
 
