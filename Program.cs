@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace RenamerX
 {
-    static class Program
+    internal static class Program
     {
         public static readonly string ApplicationName = Application.ProductName;
         public static readonly string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationName);
@@ -26,16 +26,14 @@ namespace RenamerX
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Config = AppConfig.Load(AppConfigFilename);
-
+            Config = AppConfig.Load(ApplicationConfigFilePath);
             Application.Run(new MainForm());
-
-            Config.Save(AppConfigFilename);
+            Config.Save(ApplicationConfigFilePath);
         }
     }
 }

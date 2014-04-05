@@ -32,7 +32,9 @@ namespace RenamerX
 
         public void UpdateUI()
         {
-            groupBoxInput.Text = string.Format("with {0} chars", textBoxInput.Text.Length);
+            groupBoxInput.Enabled = comboBoxOperation.SelectedIndex == (int)OperationType.Replace;
+            groupBoxInput.Text = string.Format("find ({0} chars)", textBoxInput.Text.Length);
+            groupBoxOutput.Text = string.Format((comboBoxOperation.SelectedIndex == (int)OperationType.Replace ? "replace" : "with") + " ({0} chars)", textBoxOutput.Text.Length);
         }
 
         public void SaveSettings()
@@ -47,7 +49,7 @@ namespace RenamerX
             SaveSettings();
         }
 
-        private void textBoxInput_TextChanged(object sender, EventArgs e)
+        private void textBoxOutput_TextChanged(object sender, EventArgs e)
         {
             UpdateUI();
         }
@@ -55,22 +57,21 @@ namespace RenamerX
         private void buttonOk_Click(object sender, EventArgs e)
         {
             SaveSettings();
-            Worker.Run(textBoxInput.Text);
+            Worker.Run(new WorkerConfig() { InputText = textBoxInput.Text, OutputText = textBoxOutput.Text });
         }
 
         private void buttonBrowse_Click(object sender, EventArgs e)
         {
-            TextBox textBoxPath = new TextBox();
             using (FolderSelectDialog dlg = new FolderSelectDialog())
             {
                 dlg.Title = "Browse for folder...";
 
                 if (dlg.ShowDialog())
                 {
+                    Worker.Load(new string[] { dlg.FileName });
+                    listBoxFolders.Items.Add(dlg.FileName);
                 }
             }
-
-            Helpers.BrowseFolder("Browse for folder...", textBoxPath);
         }
 
         private void listBoxFolders_DragDrop(object sender, DragEventArgs e)
@@ -96,6 +97,11 @@ namespace RenamerX
         private void buttonClear_Click(object sender, EventArgs e)
         {
             listBoxFolders.Items.Clear();
+        }
+
+        private void comboBoxOperation_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateUI();
         }
     }
 }
