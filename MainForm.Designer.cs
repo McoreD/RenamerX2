@@ -34,14 +34,14 @@
             this.checkBoxFolders = new System.Windows.Forms.CheckBox();
             this.checkBoxFiles = new System.Windows.Forms.CheckBox();
             this.groupBoxOutput = new System.Windows.Forms.GroupBox();
-            this.textBoxOutput = new System.Windows.Forms.TextBox();
+            this.textBoxReplaceWith = new System.Windows.Forms.TextBox();
             this.buttonOk = new System.Windows.Forms.Button();
             this.groupBoxPaths = new System.Windows.Forms.GroupBox();
             this.listBox = new System.Windows.Forms.ListBox();
             this.buttonBrowse = new System.Windows.Forms.Button();
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
-            this.textBoxInput = new System.Windows.Forms.TextBox();
+            this.textBoxFind = new System.Windows.Forms.TextBox();
             this.groupBoxOperation.SuspendLayout();
             this.groupBoxTargets.SuspendLayout();
             this.groupBoxOutput.SuspendLayout();
@@ -104,7 +104,7 @@
             // 
             // groupBoxOutput
             // 
-            this.groupBoxOutput.Controls.Add(this.textBoxOutput);
+            this.groupBoxOutput.Controls.Add(this.textBoxReplaceWith);
             this.groupBoxOutput.Location = new System.Drawing.Point(464, 8);
             this.groupBoxOutput.Name = "groupBoxOutput";
             this.groupBoxOutput.Size = new System.Drawing.Size(149, 48);
@@ -112,13 +112,13 @@
             this.groupBoxOutput.TabStop = false;
             this.groupBoxOutput.Text = "with";
             // 
-            // textBoxOutput
+            // textBoxReplaceWith
             // 
-            this.textBoxOutput.Location = new System.Drawing.Point(6, 19);
-            this.textBoxOutput.Name = "textBoxOutput";
-            this.textBoxOutput.Size = new System.Drawing.Size(130, 20);
-            this.textBoxOutput.TabIndex = 0;
-            this.textBoxOutput.TextChanged += new System.EventHandler(this.textBoxOutput_TextChanged);
+            this.textBoxReplaceWith.Location = new System.Drawing.Point(6, 19);
+            this.textBoxReplaceWith.Name = "textBoxReplaceWith";
+            this.textBoxReplaceWith.Size = new System.Drawing.Size(130, 20);
+            this.textBoxReplaceWith.TabIndex = 0;
+            this.textBoxReplaceWith.TextChanged += new System.EventHandler(this.textBoxOutput_TextChanged);
             // 
             // buttonOk
             // 
@@ -175,7 +175,7 @@
             // 
             // groupBoxInput
             // 
-            this.groupBoxInput.Controls.Add(this.textBoxInput);
+            this.groupBoxInput.Controls.Add(this.textBoxFind);
             this.groupBoxInput.Location = new System.Drawing.Point(304, 8);
             this.groupBoxInput.Name = "groupBoxInput";
             this.groupBoxInput.Size = new System.Drawing.Size(152, 48);
@@ -183,13 +183,13 @@
             this.groupBoxInput.TabStop = false;
             this.groupBoxInput.Text = "find";
             // 
-            // textBoxInput
+            // textBoxFind
             // 
-            this.textBoxInput.Location = new System.Drawing.Point(6, 19);
-            this.textBoxInput.Name = "textBoxInput";
-            this.textBoxInput.Size = new System.Drawing.Size(138, 20);
-            this.textBoxInput.TabIndex = 0;
-            this.textBoxInput.TextChanged += new System.EventHandler(this.textBoxOutput_TextChanged);
+            this.textBoxFind.Location = new System.Drawing.Point(6, 19);
+            this.textBoxFind.Name = "textBoxFind";
+            this.textBoxFind.Size = new System.Drawing.Size(138, 20);
+            this.textBoxFind.TabIndex = 0;
+            this.textBoxFind.TextChanged += new System.EventHandler(this.textBoxOutput_TextChanged);
             // 
             // MainForm
             // 
@@ -231,14 +231,14 @@
         private System.Windows.Forms.CheckBox checkBoxFolders;
         private System.Windows.Forms.CheckBox checkBoxFiles;
         private System.Windows.Forms.GroupBox groupBoxOutput;
-        private System.Windows.Forms.TextBox textBoxOutput;
+        private System.Windows.Forms.TextBox textBoxReplaceWith;
         private System.Windows.Forms.Button buttonOk;
         private System.Windows.Forms.GroupBox groupBoxPaths;
         private System.Windows.Forms.ListBox listBox;
         private System.Windows.Forms.Button buttonBrowse;
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.GroupBox groupBoxInput;
-        private System.Windows.Forms.TextBox textBoxInput;
+        private System.Windows.Forms.TextBox textBoxFind;
     }
 }
 

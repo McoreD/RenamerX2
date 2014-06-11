@@ -44,13 +44,13 @@ namespace RenamerX
                     switch (Program.Config.OperationType)
                     {
                         case OperationType.Append:
-                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.OutputText) + Path.GetExtension(fi.FullName));
+                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.ReplaceWithText) + Path.GetExtension(fi.FullName));
                             break;
                         case OperationType.Prepend:
-                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.OutputText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
+                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
                             break;
                         case OperationType.Replace:
-                            string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.InputText, config.OutputText);
+                            string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.FindText, config.ReplaceWithText);
                             File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
                             break;
                     }
@@ -64,13 +64,13 @@ namespace RenamerX
                     switch (Program.Config.OperationType)
                     {
                         case OperationType.Append:
-                            Directory.Move(di.FolderPath, di.FolderPath + config.InputText);
+                            Directory.Move(di.FolderPath, di.FolderPath + config.ReplaceWithText);
                             break;
                         case OperationType.Prepend:
-                            Directory.Move(di.FolderPath, config.OutputText + di.FolderPath);
+                            Directory.Move(di.FolderPath, config.ReplaceWithText + di.FolderPath);
                             break;
                         case OperationType.Replace:
-                            string dirNameNew = Regex.Replace(di.FolderName, config.InputText, config.OutputText);
+                            string dirNameNew = Regex.Replace(di.FolderName, config.FindText, config.ReplaceWithText);
                             Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
                     }
@@ -89,7 +89,7 @@ namespace RenamerX
 
     internal class WorkerConfig
     {
-        internal string InputText { get; set; }
-        internal string OutputText { get; set; }
+        internal string FindText { get; set; }
+        internal string ReplaceWithText { get; set; }
     }
 }

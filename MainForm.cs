@@ -34,13 +34,13 @@ namespace RenamerX
         public void UpdateUI()
         {
             groupBoxInput.Enabled = comboBoxOperation.SelectedIndex == (int)OperationType.Replace;
-            groupBoxInput.Text = string.Format("find ({0} chars)", textBoxInput.Text.Length);
-            groupBoxOutput.Text = string.Format((comboBoxOperation.SelectedIndex == (int)OperationType.Replace ? "replace" : "with") + " ({0} chars)", textBoxOutput.Text.Length);
+            groupBoxInput.Text = string.Format("find ({0} chars)", textBoxFind.Text.Length);
+            groupBoxOutput.Text = string.Format((comboBoxOperation.SelectedIndex == (int)OperationType.Replace ? "replace" : "with") + " ({0} chars)", textBoxReplaceWith.Text.Length);
 
             buttonOk.Enabled = listBox.Items.Count > 0 && (checkBoxFiles.Checked || checkBoxFolders.Checked) &&
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Replace && textBoxInput.Text.Length > 0) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Append && textBoxOutput.Text.Length > 0) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxOutput.Text.Length > 0);
+                (comboBoxOperation.SelectedIndex == (int)OperationType.Replace && textBoxFind.Text.Length > 0) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.Append && textBoxReplaceWith.Text.Length > 0) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0);
         }
 
         public void SaveSettings()
@@ -65,7 +65,7 @@ namespace RenamerX
             if (checkBoxFiles.Checked || checkBoxFolders.Checked)
             {
                 SaveSettings();
-                Worker.Run(new WorkerConfig() { InputText = textBoxInput.Text, OutputText = textBoxOutput.Text });
+                Worker.Run(new WorkerConfig() { FindText = textBoxFind.Text, ReplaceWithText = textBoxReplaceWith.Text });
                 listBox.Items.Clear();
             }
             else
