@@ -39,7 +39,7 @@ namespace RenamerX
         {
             if (Program.Config.Files)
             {
-                foreach (FileInfo fi in Files)
+                Parallel.ForEach(Files, fi =>
                 {
                     switch (Program.Config.OperationType)
                     {
@@ -54,12 +54,12 @@ namespace RenamerX
                             File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
                             break;
                     }
-                }
+                });
             }
 
             if (Program.Config.Folders)
             {
-                foreach (FolderInfo di in Folders)
+                Parallel.ForEach(Folders, di =>
                 {
                     switch (Program.Config.OperationType)
                     {
@@ -74,7 +74,7 @@ namespace RenamerX
                             Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
                     }
-                }
+                });
             }
 
             Clear();

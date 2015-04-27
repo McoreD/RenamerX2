@@ -129,5 +129,10 @@ namespace RenamerX
         {
             UpdateUI();
         }
+
+        private void listBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateUI();
+        }
     }
 }

@@ -150,6 +150,7 @@
             this.listBox.Name = "listBox";
             this.listBox.Size = new System.Drawing.Size(322, 189);
             this.listBox.TabIndex = 0;
+            this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             this.listBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBoxFolders_DragDrop);
             this.listBox.DragEnter += new System.Windows.Forms.DragEventHandler(this.listBoxFolders_DragEnter);
             // 
