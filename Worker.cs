@@ -4,6 +4,7 @@ using ShareX.HelpersLib;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace RenamerX
     internal static class Worker
     {
         public static List<FileInfo> Files { get; private set; }
+        public static List<FileInfo> FailedFiles { get; private set; }
         public static List<FolderInfo> Folders { get; private set; }
 
         public static event ProgressEventHandler ProgressChanged;
@@ -26,6 +28,7 @@ namespace RenamerX
         static Worker()
         {
             Files = new List<FileInfo>();
+            FailedFiles = new List<FileInfo>();
             Folders = new List<FolderInfo>();
         }
 
@@ -56,44 +59,11 @@ namespace RenamerX
         {
             if (Program.Config.Files)
             {
-                if (Files.Count == 0)
-                {
-                    Folders.ForEach(dir => Directory.GetFiles(dir.FolderPath, "*.*", System.IO.SearchOption.AllDirectories).ForEach(fi => Files.Add(new FileInfo(fi))));
-                }
-
-                int current = 0;
-                int max = Files.Count();
-                OnProgressChanged(current, max);
-
-                Parallel.ForEach(Files, fi =>
-                {
-                    switch (Program.Config.OperationType)
-                    {
-                        case OperationType.Append:
-                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.ReplaceWithText) + Path.GetExtension(fi.FullName));
-                            break;
-
-                        case OperationType.Prepend:
-                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
-                            break;
-
-                        case OperationType.Replace:
-                            string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.FindText, config.ReplaceWithText);
-                            File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
-                            break;
-
-                        case OperationType.DeleteFilesLessThanResolution:
-                            DeleteByResolution(config, fi);
-                            break;
-                    }
-
-                    lock (progressLock)
-                    {
-                        current++;
-                        OnProgressChanged(current, max);
-                    }
-                });
+                ProcessFiles(config, Files);
             }
+
+            if (FailedFiles.Count > 0)
+                ProcessFiles(config, FailedFiles);
 
             if (Program.Config.Folders)
             {
@@ -120,26 +90,126 @@ namespace RenamerX
             Clear();
         }
 
+        private static void ProcessFiles(WorkerConfig config, List<FileInfo> files)
+        {
+            if (files.Count == 0)
+            {
+                Folders.ForEach(dir => Directory.GetFiles(dir.FolderPath, "*.*", System.IO.SearchOption.AllDirectories).ForEach(fi => files.Add(new FileInfo(fi))));
+            }
+
+            int current = 0;
+            int max = files.Count();
+            OnProgressChanged(current, max);
+
+            Parallel.ForEach(files, fi =>
+            {
+                switch (Program.Config.OperationType)
+                {
+                    case OperationType.Append:
+                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.ReplaceWithText) + Path.GetExtension(fi.FullName));
+                        break;
+
+                    case OperationType.Prepend:
+                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
+                        break;
+
+                    case OperationType.Replace:
+                        string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.FindText, config.ReplaceWithText);
+                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
+                        break;
+
+                    case OperationType.DeleteFilesLessThanResolution:
+                        DeleteByResolution(config, fi);
+                        break;
+
+                    case OperationType.OrganizePhotos:
+                        OrganizePhotos(config, fi);
+                        break;
+                }
+
+                lock (progressLock)
+                {
+                    current++;
+                    OnProgressChanged(current, max);
+                }
+            });
+        }
+
         private static void DeleteByResolution(WorkerConfig config, FileInfo fi)
         {
             if (Helpers.IsImageFile(fi.FullName) && config.Width > 0 && config.Height > 0)
             {
                 using (Image img = ImageHelpers.LoadImage(fi.FullName))
                 {
-                    if (img != null && img.Width <= config.Width && img.Height <= config.Height)
+                    if (img == null && fi.Length < config.FileSize * 1024 ||
+                        img != null && img.Width <= config.Width && img.Height <= config.Height)
                     {
                         if (string.IsNullOrEmpty(config.RecycleBinPath))
                             FileSystem.DeleteFile(fi.FullName, UIOption.OnlyErrorDialogs, RecycleOption.SendToRecycleBin);
                         else
                             FileSystem.MoveFile(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(config.RecycleBinPath, Path.GetFileName(fi.FullName))));
                     }
+                    else if (img == null)
+                    {
+                        FailedFiles.Add(fi);
+                    }
                 }
+            }
+        }
+
+        private static void OrganizePhotos(WorkerConfig config, FileInfo fi)
+        {
+            if (Helpers.IsImageFile(fi.FullName))
+            {
+                string desc = string.Empty;
+                Match r = Regex.Match(Path.GetFileName(Path.GetDirectoryName(fi.FullName)), @"\d{4}-\d{2}-\d{2} (.+)");
+                if (r.Success)
+                    desc = r.Groups[1].Value;
+
+                string dateTaken = GetDateTakenFromImage(fi.FullName).ToString("yyyy-MM-dd");
+                string dirName = !string.IsNullOrEmpty(desc) ? dateTaken + " " + desc : dateTaken;
+
+                string dest = Path.Combine(config.PhotosLocation, dirName, Path.GetFileName(fi.FullName));
+                if (!dest.Equals(fi.FullName))
+                {
+                    FileSystem.MoveFile(fi.FullName, Helpers.GetUniqueFilePath( dest));
+                }
+            }
+        }
+
+        //retrieves the datetime without loading the whole image
+        public static DateTime GetDateTakenFromImage(string fp)
+        {
+            string fn = Path.GetFileNameWithoutExtension(fp);
+            using (FileStream fs = new FileStream(fp, FileMode.Open, FileAccess.Read))
+            using (Image img = Image.FromStream(fs, false, false))
+            {
+                if (img.PropertyIdList.Any(x => x == 36867))
+                {
+                    PropertyItem propItem = img.GetPropertyItem(36867);
+                    Regex regex = new Regex(":");
+                    string dateTaken = regex.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                    return DateTime.Parse(dateTaken);
+                }
+
+                if (fn.StartsWith("CameraZOOM"))
+                {
+                    Match r = Regex.Match(fn, @".+?-(?<y>\d{4})(?<m>\d{2})(?<d>\d{2}).+");
+                    if (r.Success)
+                        return DateTime.Parse(r.Groups[1].Value + "-" + r.Groups[2].Value + "-" + r.Groups[3].Value);
+                }
+
+                DateTime dateModfied = File.GetLastWriteTime(fp);
+                DateTime dateCreated = File.GetCreationTime(fp);
+
+                return dateModfied < dateCreated ? dateModfied : dateCreated;
             }
         }
 
         public static void Clear()
         {
             Files.Clear();
+            FailedFiles.Clear();
             Folders.Clear();
         }
     }

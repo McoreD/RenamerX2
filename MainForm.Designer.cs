@@ -56,7 +56,7 @@
             this.comboBoxOperation.FormattingEnabled = true;
             this.comboBoxOperation.Location = new System.Drawing.Point(6, 19);
             this.comboBoxOperation.Name = "comboBoxOperation";
-            this.comboBoxOperation.Size = new System.Drawing.Size(121, 21);
+            this.comboBoxOperation.Size = new System.Drawing.Size(290, 21);
             this.comboBoxOperation.TabIndex = 0;
             this.comboBoxOperation.SelectedIndexChanged += new System.EventHandler(this.comboBoxOperation_SelectedIndexChanged);
             // 
@@ -65,7 +65,7 @@
             this.groupBoxOperation.Controls.Add(this.comboBoxOperation);
             this.groupBoxOperation.Location = new System.Drawing.Point(8, 8);
             this.groupBoxOperation.Name = "groupBoxOperation";
-            this.groupBoxOperation.Size = new System.Drawing.Size(144, 48);
+            this.groupBoxOperation.Size = new System.Drawing.Size(312, 48);
             this.groupBoxOperation.TabIndex = 0;
             this.groupBoxOperation.TabStop = false;
             this.groupBoxOperation.Text = "I would like to";
@@ -74,9 +74,9 @@
             // 
             this.groupBoxTargets.Controls.Add(this.checkBoxFolders);
             this.groupBoxTargets.Controls.Add(this.checkBoxFiles);
-            this.groupBoxTargets.Location = new System.Drawing.Point(160, 8);
+            this.groupBoxTargets.Location = new System.Drawing.Point(344, 8);
             this.groupBoxTargets.Name = "groupBoxTargets";
-            this.groupBoxTargets.Size = new System.Drawing.Size(160, 48);
+            this.groupBoxTargets.Size = new System.Drawing.Size(272, 48);
             this.groupBoxTargets.TabIndex = 1;
             this.groupBoxTargets.TabStop = false;
             this.groupBoxTargets.Text = "Target";
@@ -123,10 +123,11 @@
             // 
             // buttonOk
             // 
+            this.buttonOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOk.AutoSize = true;
             this.buttonOk.Enabled = false;
             this.buttonOk.Image = global::RenamerX.Properties.Resources.MakeItSo;
-            this.buttonOk.Location = new System.Drawing.Point(336, 256);
+            this.buttonOk.Location = new System.Drawing.Point(347, 320);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(273, 196);
             this.buttonOk.TabIndex = 8;
@@ -136,7 +137,7 @@
             // groupBoxPaths
             // 
             this.groupBoxPaths.Controls.Add(this.listBox);
-            this.groupBoxPaths.Location = new System.Drawing.Point(336, 8);
+            this.groupBoxPaths.Location = new System.Drawing.Point(344, 64);
             this.groupBoxPaths.Name = "groupBoxPaths";
             this.groupBoxPaths.Size = new System.Drawing.Size(273, 208);
             this.groupBoxPaths.TabIndex = 4;
@@ -158,7 +159,8 @@
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(336, 224);
+            this.buttonBrowse.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonBrowse.Location = new System.Drawing.Point(347, 288);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowse.TabIndex = 6;
@@ -168,7 +170,8 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(534, 224);
+            this.buttonClear.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonClear.Location = new System.Drawing.Point(545, 288);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(75, 23);
             this.buttonClear.TabIndex = 7;
@@ -199,8 +202,8 @@
             this.pgApp.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
             this.pgApp.Location = new System.Drawing.Point(8, 124);
             this.pgApp.Name = "pgApp";
-            this.pgApp.PropertySort = System.Windows.Forms.PropertySort.NoSort;
-            this.pgApp.Size = new System.Drawing.Size(312, 328);
+            this.pgApp.PropertySort = System.Windows.Forms.PropertySort.Categorized;
+            this.pgApp.Size = new System.Drawing.Size(312, 388);
             this.pgApp.TabIndex = 5;
             this.pgApp.ToolbarVisible = false;
             // 
@@ -208,7 +211,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 463);
+            this.ClientSize = new System.Drawing.Size(635, 527);
             this.Controls.Add(this.pgApp);
             this.Controls.Add(this.groupBoxInput);
             this.Controls.Add(this.buttonClear);
