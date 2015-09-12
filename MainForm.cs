@@ -1,5 +1,4 @@
-﻿using HelpersLib;
-using IndexerLib;
+﻿using ShareX.HelpersLib;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -20,10 +20,21 @@ namespace RenamerX
             InitializeComponent();
             this.Text = "RenamerX";
             ConfigUI();
+
+            Worker.ProgressChanged += Worker_ProgressChanged;
+        }
+
+        private void Worker_ProgressChanged(int current, int max)
+        {
+            this.InvokeSafe(() =>
+            {
+                groupBoxPaths.Text = $"Processing {current} of {max}";
+            });
         }
 
         public void ConfigUI()
         {
+            pgApp.SelectedObject = Program.Config.WorkerConfig;
             comboBoxOperation.Items.Clear();
             comboBoxOperation.Items.AddRange(Helpers.GetEnumDescriptions<OperationType>());
             comboBoxOperation.SelectedIndex = ((int)Program.Config.OperationType).BetweenOrDefault(0, comboBoxOperation.Items.Count - 1);
@@ -33,14 +44,16 @@ namespace RenamerX
 
         public void UpdateUI()
         {
+            groupBoxPaths.Text = $"Drag n drop files ({Worker.Files.Count}) / folders ({Worker.Folders.Count})";
             groupBoxInput.Enabled = comboBoxOperation.SelectedIndex == (int)OperationType.Replace;
             groupBoxInput.Text = string.Format("find ({0} chars)", textBoxFind.Text.Length);
             groupBoxOutput.Text = string.Format((comboBoxOperation.SelectedIndex == (int)OperationType.Replace ? "replace" : "with") + " ({0} chars)", textBoxReplaceWith.Text.Length);
 
             buttonOk.Enabled = listBox.Items.Count > 0 && (checkBoxFiles.Checked || checkBoxFolders.Checked) &&
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Replace && textBoxFind.Text.Length > 0) ||
+                ((comboBoxOperation.SelectedIndex == (int)OperationType.Replace && textBoxFind.Text.Length > 0) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.Append && textBoxReplaceWith.Text.Length > 0) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0);
+                (comboBoxOperation.SelectedIndex == (int)OperationType.DeleteFilesLessThanResolution && Program.Config.WorkerConfig.Width > 0 && Program.Config.WorkerConfig.Height > 0) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0));
         }
 
         public void SaveSettings()
@@ -48,6 +61,9 @@ namespace RenamerX
             Program.Config.OperationType = (OperationType)comboBoxOperation.SelectedIndex;
             Program.Config.Files = checkBoxFiles.Checked;
             Program.Config.Folders = checkBoxFolders.Checked;
+
+            Program.Config.WorkerConfig.FindText = textBoxFind.Text;
+            Program.Config.WorkerConfig.ReplaceWithText = textBoxReplaceWith.Text;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -64,9 +80,14 @@ namespace RenamerX
         {
             if (checkBoxFiles.Checked || checkBoxFolders.Checked)
             {
+                buttonOk.Enabled = false;
                 SaveSettings();
-                Worker.Run(new WorkerConfig() { FindText = textBoxFind.Text, ReplaceWithText = textBoxReplaceWith.Text });
-                listBox.Items.Clear();
+
+                Task.Run(() => Worker.Run(Program.Config.WorkerConfig)).ContinueWith(x =>
+                {
+                    listBox.Items.Clear();
+                    UpdateUI();
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
             else
             {
@@ -93,6 +114,8 @@ namespace RenamerX
             Worker.Load(e.Data.GetData(DataFormats.FileDrop, false) as string[]);
             listBox.Items.AddRange(Worker.Folders.Select(x => x.FolderName).ToArray<string>());
             listBox.Items.AddRange(Worker.Files.Select(x => Path.GetFileName(x.FullName)).ToArray<string>());
+
+            UpdateUI();
         }
 
         private void listBoxFolders_DragEnter(object sender, DragEventArgs e)
@@ -113,6 +136,7 @@ namespace RenamerX
         {
             listBox.Items.Clear();
             Worker.Clear();
+            UpdateUI();
         }
 
         private void comboBoxOperation_SelectedIndexChanged(object sender, EventArgs e)

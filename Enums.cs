@@ -10,6 +10,7 @@ namespace RenamerX
     {
         Append,
         Prepend,
-        Replace
+        Replace,
+        DeleteFilesLessThanResolution
     }
 }

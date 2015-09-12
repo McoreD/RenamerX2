@@ -1,20 +1,31 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RenamerX", "RenamerX.csproj", "{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShareX.HelpersLib", "..\ShareX\ShareX.HelpersLib\ShareX.HelpersLib.csproj", "{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
+		Steam|Any CPU = Steam|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Steam|Any CPU.ActiveCfg = Release|Any CPU
+		{75C5186B-CE42-40E8-8EEC-87FC70B2CB73}.Steam|Any CPU.Build.0 = Release|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Steam|Any CPU.ActiveCfg = Steam|Any CPU
+		{327750E1-9FB7-4CC3-8AEA-9BC42180CAD3}.Steam|Any CPU.Build.0 = Steam|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

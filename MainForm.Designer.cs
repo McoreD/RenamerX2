@@ -42,6 +42,7 @@
             this.buttonClear = new System.Windows.Forms.Button();
             this.groupBoxInput = new System.Windows.Forms.GroupBox();
             this.textBoxFind = new System.Windows.Forms.TextBox();
+            this.pgApp = new System.Windows.Forms.PropertyGrid();
             this.groupBoxOperation.SuspendLayout();
             this.groupBoxTargets.SuspendLayout();
             this.groupBoxOutput.SuspendLayout();
@@ -75,7 +76,7 @@
             this.groupBoxTargets.Controls.Add(this.checkBoxFiles);
             this.groupBoxTargets.Location = new System.Drawing.Point(160, 8);
             this.groupBoxTargets.Name = "groupBoxTargets";
-            this.groupBoxTargets.Size = new System.Drawing.Size(136, 48);
+            this.groupBoxTargets.Size = new System.Drawing.Size(160, 48);
             this.groupBoxTargets.TabIndex = 1;
             this.groupBoxTargets.TabStop = false;
             this.groupBoxTargets.Text = "Target";
@@ -105,7 +106,7 @@
             // groupBoxOutput
             // 
             this.groupBoxOutput.Controls.Add(this.textBoxReplaceWith);
-            this.groupBoxOutput.Location = new System.Drawing.Point(464, 8);
+            this.groupBoxOutput.Location = new System.Drawing.Point(168, 64);
             this.groupBoxOutput.Name = "groupBoxOutput";
             this.groupBoxOutput.Size = new System.Drawing.Size(149, 48);
             this.groupBoxOutput.TabIndex = 3;
@@ -122,21 +123,22 @@
             // 
             // buttonOk
             // 
+            this.buttonOk.AutoSize = true;
             this.buttonOk.Enabled = false;
             this.buttonOk.Image = global::RenamerX.Properties.Resources.MakeItSo;
-            this.buttonOk.Location = new System.Drawing.Point(344, 72);
+            this.buttonOk.Location = new System.Drawing.Point(336, 256);
             this.buttonOk.Name = "buttonOk";
-            this.buttonOk.Size = new System.Drawing.Size(272, 196);
-            this.buttonOk.TabIndex = 5;
+            this.buttonOk.Size = new System.Drawing.Size(273, 196);
+            this.buttonOk.TabIndex = 8;
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
             // groupBoxPaths
             // 
             this.groupBoxPaths.Controls.Add(this.listBox);
-            this.groupBoxPaths.Location = new System.Drawing.Point(8, 64);
+            this.groupBoxPaths.Location = new System.Drawing.Point(336, 8);
             this.groupBoxPaths.Name = "groupBoxPaths";
-            this.groupBoxPaths.Size = new System.Drawing.Size(328, 208);
+            this.groupBoxPaths.Size = new System.Drawing.Size(273, 208);
             this.groupBoxPaths.TabIndex = 4;
             this.groupBoxPaths.TabStop = false;
             this.groupBoxPaths.Text = "Drag n drop files/folders";
@@ -148,7 +150,7 @@
             this.listBox.FormattingEnabled = true;
             this.listBox.Location = new System.Drawing.Point(3, 16);
             this.listBox.Name = "listBox";
-            this.listBox.Size = new System.Drawing.Size(322, 189);
+            this.listBox.Size = new System.Drawing.Size(267, 189);
             this.listBox.TabIndex = 0;
             this.listBox.SelectedIndexChanged += new System.EventHandler(this.listBox_SelectedIndexChanged);
             this.listBox.DragDrop += new System.Windows.Forms.DragEventHandler(this.listBoxFolders_DragDrop);
@@ -156,7 +158,7 @@
             // 
             // buttonBrowse
             // 
-            this.buttonBrowse.Location = new System.Drawing.Point(8, 280);
+            this.buttonBrowse.Location = new System.Drawing.Point(336, 224);
             this.buttonBrowse.Name = "buttonBrowse";
             this.buttonBrowse.Size = new System.Drawing.Size(75, 23);
             this.buttonBrowse.TabIndex = 6;
@@ -166,7 +168,7 @@
             // 
             // buttonClear
             // 
-            this.buttonClear.Location = new System.Drawing.Point(88, 280);
+            this.buttonClear.Location = new System.Drawing.Point(534, 224);
             this.buttonClear.Name = "buttonClear";
             this.buttonClear.Size = new System.Drawing.Size(75, 23);
             this.buttonClear.TabIndex = 7;
@@ -177,7 +179,7 @@
             // groupBoxInput
             // 
             this.groupBoxInput.Controls.Add(this.textBoxFind);
-            this.groupBoxInput.Location = new System.Drawing.Point(304, 8);
+            this.groupBoxInput.Location = new System.Drawing.Point(8, 64);
             this.groupBoxInput.Name = "groupBoxInput";
             this.groupBoxInput.Size = new System.Drawing.Size(152, 48);
             this.groupBoxInput.TabIndex = 2;
@@ -192,11 +194,22 @@
             this.textBoxFind.TabIndex = 0;
             this.textBoxFind.TextChanged += new System.EventHandler(this.textBoxOutput_TextChanged);
             // 
+            // pgApp
+            // 
+            this.pgApp.CategoryForeColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.pgApp.Location = new System.Drawing.Point(8, 124);
+            this.pgApp.Name = "pgApp";
+            this.pgApp.PropertySort = System.Windows.Forms.PropertySort.NoSort;
+            this.pgApp.Size = new System.Drawing.Size(312, 328);
+            this.pgApp.TabIndex = 5;
+            this.pgApp.ToolbarVisible = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(624, 312);
+            this.ClientSize = new System.Drawing.Size(624, 463);
+            this.Controls.Add(this.pgApp);
             this.Controls.Add(this.groupBoxInput);
             this.Controls.Add(this.buttonClear);
             this.Controls.Add(this.buttonBrowse);
@@ -221,6 +234,7 @@
             this.groupBoxInput.ResumeLayout(false);
             this.groupBoxInput.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -240,6 +254,7 @@
         private System.Windows.Forms.Button buttonClear;
         private System.Windows.Forms.GroupBox groupBoxInput;
         private System.Windows.Forms.TextBox textBoxFind;
+        private System.Windows.Forms.PropertyGrid pgApp;
     }
 }
 
