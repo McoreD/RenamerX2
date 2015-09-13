@@ -167,12 +167,15 @@ namespace RenamerX
                     desc = r.Groups[1].Value;
 
                 string dateTaken = GetDateTakenFromImage(fi.FullName).ToString("yyyy-MM-dd");
-                string dirName = !string.IsNullOrEmpty(desc) ? dateTaken + " " + desc : dateTaken;
-
-                string dest = Path.Combine(config.PhotosLocation, dirName, Path.GetFileName(fi.FullName));
-                if (!dest.Equals(fi.FullName))
+                if (File.Exists(fi.FullName))
                 {
-                    FileSystem.MoveFile(fi.FullName, Helpers.GetUniqueFilePath( dest));
+                    string dirName = !string.IsNullOrEmpty(desc) ? dateTaken + " " + desc : dateTaken;
+
+                    string dest = Path.Combine(config.PhotosLocation, dirName, Path.GetFileName(fi.FullName));
+                    if (!dest.Equals(fi.FullName))
+                    {
+                        FileSystem.MoveFile(fi.FullName, Helpers.GetUniqueFilePath(dest));
+                    }
                 }
             }
         }
@@ -181,29 +184,36 @@ namespace RenamerX
         public static DateTime GetDateTakenFromImage(string fp)
         {
             string fn = Path.GetFileNameWithoutExtension(fp);
-            using (FileStream fs = new FileStream(fp, FileMode.Open, FileAccess.Read))
-            using (Image img = Image.FromStream(fs, false, false))
+            try
             {
-                if (img.PropertyIdList.Any(x => x == 36867))
+                using (FileStream fs = new FileStream(fp, FileMode.Open, FileAccess.Read))
+                using (Image img = Image.FromStream(fs, false, false))
                 {
-                    PropertyItem propItem = img.GetPropertyItem(36867);
-                    Regex regex = new Regex(":");
-                    string dateTaken = regex.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-                    return DateTime.Parse(dateTaken);
+                    if (img.PropertyIdList.Any(x => x == 36867))
+                    {
+                        PropertyItem propItem = img.GetPropertyItem(36867);
+                        Regex regex = new Regex(":");
+                        string dateTaken = regex.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+                        return DateTime.Parse(dateTaken);
+                    }
                 }
-
-                if (fn.StartsWith("CameraZOOM"))
-                {
-                    Match r = Regex.Match(fn, @".+?-(?<y>\d{4})(?<m>\d{2})(?<d>\d{2}).+");
-                    if (r.Success)
-                        return DateTime.Parse(r.Groups[1].Value + "-" + r.Groups[2].Value + "-" + r.Groups[3].Value);
-                }
-
-                DateTime dateModfied = File.GetLastWriteTime(fp);
-                DateTime dateCreated = File.GetCreationTime(fp);
-
-                return dateModfied < dateCreated ? dateModfied : dateCreated;
             }
+            catch (Exception)
+            {
+                FileSystem.DeleteFile(fp, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
+            }
+
+            if (fn.StartsWith("CameraZOOM"))
+            {
+                Match r = Regex.Match(fn, @".+?-(?<y>\d{4})(?<m>\d{2})(?<d>\d{2}).+");
+                if (r.Success)
+                    return DateTime.Parse(r.Groups[1].Value + "-" + r.Groups[2].Value + "-" + r.Groups[3].Value);
+            }
+
+            DateTime dateModfied = File.GetLastWriteTime(fp);
+            DateTime dateCreated = File.GetCreationTime(fp);
+
+            return dateModfied < dateCreated ? dateModfied : dateCreated;
         }
 
         public static void Clear()
