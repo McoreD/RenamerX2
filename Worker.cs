@@ -106,16 +106,19 @@ namespace RenamerX
                 switch (Program.Config.OperationType)
                 {
                     case OperationType.Append:
-                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.ReplaceWithText) + Path.GetExtension(fi.FullName));
+                        File.Move(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName) + config.ReplaceWithText) + Path.GetExtension(fi.FullName)));
                         break;
 
                     case OperationType.Prepend:
                         File.Move(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName)));
                         break;
 
+                    case OperationType.InsertAt:
+                        File.Move(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(Path.GetDirectoryName(fi.FullName), Path.GetFileNameWithoutExtension(fi.FullName).Insert(config.InsertAtIndex, config.ReplaceWithText)) + Path.GetExtension(fi.FullName)));
+                        break;
+
                     case OperationType.Replace:
-                        string fileNameNew = Regex.Replace(Path.GetFileName(fi.FullName), config.FindText, config.ReplaceWithText);
-                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), fileNameNew));
+                        File.Move(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(Path.GetDirectoryName(fi.FullName), Regex.Replace(Path.GetFileName(fi.FullName), config.FindText, config.ReplaceWithText))));
                         break;
 
                     case OperationType.DeleteFilesLessThanResolution:

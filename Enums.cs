@@ -12,7 +12,7 @@ namespace RenamerX
         Append,
         Prepend,
         Replace,
-
+        InsertAt,
         [Description("Delete files less than specific resolution")]
         DeleteFilesLessThanResolution,
         [Description("Organize photos by Date Taken")]
