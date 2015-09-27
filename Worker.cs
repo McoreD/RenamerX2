@@ -110,7 +110,7 @@ namespace RenamerX
                         break;
 
                     case OperationType.Prepend:
-                        File.Move(fi.FullName, Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName));
+                        File.Move(fi.FullName, Helpers.GetUniqueFilePath(Path.Combine(Path.GetDirectoryName(fi.FullName), config.ReplaceWithText + Path.GetFileNameWithoutExtension(fi.FullName)) + Path.GetExtension(fi.FullName)));
                         break;
 
                     case OperationType.Replace:
