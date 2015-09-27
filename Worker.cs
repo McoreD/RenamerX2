@@ -83,6 +83,10 @@ namespace RenamerX
                             string dirNameNew = Regex.Replace(di.FolderName, config.FindText, config.ReplaceWithText);
                             Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
+
+                        default:
+                            ProcessFiles(config);
+                            break;
                     }
                 });
             }
@@ -90,10 +94,11 @@ namespace RenamerX
             Clear();
         }
 
-        private static void ProcessFiles(WorkerConfig config, List<FileInfo> files)
+        private static void ProcessFiles(WorkerConfig config, List<FileInfo> files = null)
         {
-            if (files.Count == 0)
+            if (files == null || files.Count == 0)
             {
+                if (files == null) files = new List<FileInfo>();
                 Folders.ForEach(dir => Directory.GetFiles(dir.FolderPath, "*.*", System.IO.SearchOption.AllDirectories).ForEach(fi => files.Add(new FileInfo(fi))));
             }
 
