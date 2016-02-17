@@ -1,4 +1,5 @@
 ﻿using ShareX.HelpersLib;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
 
@@ -6,22 +7,9 @@ namespace RenamerX
 {
     public class AppConfig : SettingsBase<AppConfig>
     {
+        [Browsable(false)]
         public OperationType OperationType { get; set; }
 
-        public bool Files { get; set; }
-
-        public bool Folders { get; set; }
-
-        public WorkerConfig WorkerConfig { get; set; }
-
-        public AppConfig()
-        {
-            WorkerConfig = new WorkerConfig();
-        }
-    }
-
-    public class WorkerConfig
-    {
         [Browsable(false)]
         public string FindText { get; set; }
 
@@ -48,8 +36,13 @@ namespace RenamerX
         [Editor(typeof(DirectoryNameEditor), typeof(UITypeEditor))]
         public string PhotosLocation { get; set; }
 
-        public WorkerConfig()
+        [Category("General"), Description("Files with these file extensions will be processed.")]
+        [Editor("System.Windows.Forms.Design.StringCollectionEditor,System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
+        public List<string> FileExtensions { get; set; }
+
+        public AppConfig()
         {
+            FileExtensions = new List<string>();
             this.ApplyDefaultPropertyValues();
         }
     }

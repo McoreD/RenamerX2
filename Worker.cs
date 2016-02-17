@@ -55,9 +55,9 @@ namespace RenamerX
             }
         }
 
-        public static void Run(WorkerConfig config)
+        public static void Run(AppConfig config)
         {
-            if (Program.Config.Files)
+            if (Program.Files)
             {
                 ProcessFiles(config, Files);
             }
@@ -65,7 +65,7 @@ namespace RenamerX
             if (FailedFiles.Count > 0)
                 ProcessFiles(config, FailedFiles);
 
-            if (Program.Config.Folders)
+            if (Program.Folders)
             {
                 Parallel.ForEach(Folders, di =>
                 {
@@ -94,7 +94,7 @@ namespace RenamerX
             Clear();
         }
 
-        private static void ProcessFiles(WorkerConfig config, List<FileInfo> files = null)
+        private static void ProcessFiles(AppConfig config, List<FileInfo> files = null)
         {
             if (files == null || files.Count == 0)
             {
@@ -143,7 +143,7 @@ namespace RenamerX
             });
         }
 
-        private static void DeleteByResolution(WorkerConfig config, FileInfo fi)
+        private static void DeleteByResolution(AppConfig config, FileInfo fi)
         {
             if (Helpers.IsImageFile(fi.FullName) && config.Width > 0 && config.Height > 0)
             {
@@ -165,7 +165,7 @@ namespace RenamerX
             }
         }
 
-        private static void OrganizePhotos(WorkerConfig config, FileInfo fi)
+        private static void OrganizePhotos(AppConfig config, FileInfo fi)
         {
             if (Helpers.IsImageFile(fi.FullName))
             {

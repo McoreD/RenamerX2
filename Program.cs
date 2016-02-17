@@ -1,9 +1,5 @@
-﻿using ShareX.HelpersLib;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace RenamerX
@@ -14,6 +10,9 @@ namespace RenamerX
         public static readonly string ConfigPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), ApplicationName);
         private static readonly string AppConfigFilename = "AppConfig.json";
         public static AppConfig Config { get; private set; }
+
+        public static bool Files { get; set; }
+        public static bool Folders { get; set; }
 
         public static string ApplicationConfigFilePath
         {

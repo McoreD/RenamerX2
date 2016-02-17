@@ -1,13 +1,8 @@
 ﻿using ShareX.HelpersLib;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -18,6 +13,13 @@ namespace RenamerX
         public MainForm()
         {
             InitializeComponent();
+
+            if (Program.Config.FileExtensions.Count == 0)
+            {
+                Program.Config.FileExtensions.Add("jpg");
+                Program.Config.FileExtensions.Add("jpeg");
+            }
+
             this.Text = "RenamerX";
             ConfigUI();
 
@@ -34,7 +36,8 @@ namespace RenamerX
 
         public void ConfigUI()
         {
-            pgApp.SelectedObject = Program.Config.WorkerConfig;
+            pgApp.SelectedObject = Program.Config;
+
             comboBoxOperation.Items.Clear();
             comboBoxOperation.Items.AddRange(Helpers.GetEnumDescriptions<OperationType>());
             comboBoxOperation.SelectedIndex = ((int)Program.Config.OperationType).BetweenOrDefault(0, comboBoxOperation.Items.Count - 1);
@@ -53,19 +56,19 @@ namespace RenamerX
                 ((comboBoxOperation.SelectedIndex == (int)OperationType.Replace && textBoxFind.Text.Length > 0) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.Append && textBoxReplaceWith.Text.Length > 0) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.InsertAt && textBoxReplaceWith.Text.Length > 0) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.DeleteFilesLessThanResolution && Program.Config.WorkerConfig.Width > 0 && Program.Config.WorkerConfig.Height > 0) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.OrganizePhotos && !string.IsNullOrEmpty(Program.Config.WorkerConfig.PhotosLocation) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.DeleteFilesLessThanResolution && Program.Config.Width > 0 && Program.Config.Height > 0) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.OrganizePhotos && !string.IsNullOrEmpty(Program.Config.PhotosLocation) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0)));
         }
 
         public void SaveSettings()
         {
             Program.Config.OperationType = (OperationType)comboBoxOperation.SelectedIndex;
-            Program.Config.Files = checkBoxFiles.Checked;
-            Program.Config.Folders = checkBoxFolders.Checked;
+            Program.Files = checkBoxFiles.Checked;
+            Program.Folders = checkBoxFolders.Checked;
 
-            Program.Config.WorkerConfig.FindText = textBoxFind.Text;
-            Program.Config.WorkerConfig.ReplaceWithText = textBoxReplaceWith.Text;
+            Program.Config.FindText = textBoxFind.Text;
+            Program.Config.ReplaceWithText = textBoxReplaceWith.Text;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -85,7 +88,7 @@ namespace RenamerX
                 buttonOk.Enabled = false;
                 SaveSettings();
 
-                Task.Run(() => Worker.Run(Program.Config.WorkerConfig)).ContinueWith(x =>
+                Task.Run(() => Worker.Run(Program.Config)).ContinueWith(x =>
                 {
                     listBox.Items.Clear();
                     UpdateUI();
