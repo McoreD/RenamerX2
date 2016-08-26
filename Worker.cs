@@ -84,6 +84,11 @@ namespace RenamerX
                             Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
 
+                        case OperationType.RemoveEmptyFolders:
+                            if (EmptyFolderHelper.CheckDirectoryEmpty(di.FolderPath))
+                                Directory.Move(di.FolderPath, Path.Combine(config.RecycleBinPath, di.FolderName));
+                            break;
+
                         default:
                             ProcessFiles(config);
                             break;

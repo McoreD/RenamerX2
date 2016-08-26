@@ -16,6 +16,8 @@ namespace RenamerX
         [Description("Delete files less than specific resolution")]
         DeleteFilesLessThanResolution,
         [Description("Organize photos by Date Taken")]
-        OrganizePhotos
+        OrganizePhotos,
+        [Description("Remove empty folders")]
+        RemoveEmptyFolders
     }
 }
