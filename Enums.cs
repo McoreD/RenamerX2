@@ -15,6 +15,8 @@ namespace RenamerX
         InsertAt,
         [Description("Delete files less than specific resolution")]
         DeleteFilesLessThanResolution,
+        [Description("Organize files by Date Created")]
+        OrganizeFilesDateCreated,
         [Description("Organize photos by Date Taken")]
         OrganizePhotos,
         [Description("Remove empty folders")]

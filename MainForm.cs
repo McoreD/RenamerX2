@@ -57,9 +57,10 @@ namespace RenamerX
                 (comboBoxOperation.SelectedIndex == (int)OperationType.Append && textBoxReplaceWith.Text.Length > 0) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.InsertAt && textBoxReplaceWith.Text.Length > 0) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.DeleteFilesLessThanResolution && Program.Config.Width > 0 && Program.Config.Height > 0) ||
+                (comboBoxOperation.SelectedIndex == (int)OperationType.OrganizeFilesDateCreated && !string.IsNullOrEmpty(Program.Config.PhotosLocation) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.OrganizePhotos && !string.IsNullOrEmpty(Program.Config.PhotosLocation) ||
                 (comboBoxOperation.SelectedIndex == (int)OperationType.RemoveEmptyFolders && checkBoxFolders.Checked) ||
-                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0)));
+                (comboBoxOperation.SelectedIndex == (int)OperationType.Prepend && textBoxReplaceWith.Text.Length > 0))));
         }
 
         public void SaveSettings()

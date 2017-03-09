@@ -135,6 +135,10 @@ namespace RenamerX
                         DeleteByResolution(config, fi);
                         break;
 
+                    case OperationType.OrganizeFilesDateCreated:
+                        OrganiseFiles(config, fi);
+                        break;
+
                     case OperationType.OrganizePhotos:
                         OrganizePhotos(config, fi);
                         break;
@@ -167,6 +171,18 @@ namespace RenamerX
                         FailedFiles.Add(fi);
                     }
                 }
+            }
+        }
+
+        private static void OrganiseFiles(AppConfig config, FileInfo fi)
+        {
+            string dateTaken = fi.CreationTime.ToString("yyyy-MM");
+            if (File.Exists(fi.FullName))
+            {
+                string destDir = Path.Combine(config.PhotosLocation, dateTaken);
+                Helpers.CreateDirectoryFromDirectoryPath(destDir);
+                string dest = Path.Combine(destDir, Path.GetFileName(fi.FullName));
+                FileSystem.MoveFile(fi.FullName, dest);
             }
         }
 
