@@ -72,15 +72,17 @@ namespace RenamerX
                     switch (Program.Config.OperationType)
                     {
                         case OperationType.Append:
-                            Directory.Move(di.FolderPath, di.FolderPath + config.ReplaceWithText);
+                            string dirNameNew = di.FolderName + config.ReplaceWithText;
+                            Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
 
                         case OperationType.Prepend:
-                            Directory.Move(di.FolderPath, config.ReplaceWithText + di.FolderPath);
+                            dirNameNew = config.ReplaceWithText + di.FolderName;
+                            Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
 
                         case OperationType.Replace:
-                            string dirNameNew = Regex.Replace(di.FolderName, config.FindText, config.ReplaceWithText);
+                            dirNameNew = Regex.Replace(di.FolderName, config.FindText, config.ReplaceWithText);
                             Directory.Move(di.FolderPath, Path.Combine(Path.GetDirectoryName(di.FolderPath), dirNameNew));
                             break;
 
