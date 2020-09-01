@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace RenamerX
 {
@@ -15,7 +10,7 @@ namespace RenamerX
         InsertAt,
         [Description("Delete files less than specific resolution")]
         DeleteFilesLessThanResolution,
-        [Description("Organize files by Date Created")]
+        [Description("Organize files by Date Modified")]
         OrganizeFilesDateCreated,
         [Description("Organize photos by Date Taken")]
         OrganizePhotos,

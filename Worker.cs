@@ -178,13 +178,15 @@ namespace RenamerX
 
         private static void OrganiseFiles(AppConfig config, FileInfo fi)
         {
-            string dateTaken = fi.CreationTime.ToString("yyyy-MM");
+            string dateTaken = fi.LastWriteTime.ToString("yyyy-MM");
             if (File.Exists(fi.FullName))
             {
-                string destDir = Path.Combine(config.PhotosLocation, dateTaken);
-                Helpers.CreateDirectoryFromDirectoryPath(destDir);
+                string destDir = Helpers.ExpandFolderVariables(Path.Combine(config.PhotosLocation, dateTaken));
+                if (!Directory.Exists(destDir)) Directory.CreateDirectory(destDir);
+
                 string dest = Path.Combine(destDir, Path.GetFileName(fi.FullName));
-                FileSystem.MoveFile(fi.FullName, dest);
+                if (dest != fi.FullName)
+                    FileSystem.MoveFile(fi.FullName, dest);
             }
         }
 
